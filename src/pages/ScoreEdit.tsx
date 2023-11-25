@@ -1,8 +1,7 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useParams } from 'react-router-dom';
-
+// import { useParams } from 'react-router-dom';
 
 
 interface dataS {
@@ -13,26 +12,33 @@ interface dataS {
     Point: String;
     Grade: String;
   }
-interface dataP {
-  Id: String;
-  Subj: string;
-  Credit: String;
-}
+  interface dataP {
+    Id: String;
+    Subj: string;
+    Credit: String;
+  }
 
 const ScoreEdit = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-    
-    if (location.state !== null) {
-        const { Idtsu, Name, Midterm, Final, Point, Grade, Id, Subj, Credit } = location.state;
-        
+
+  const {Idtsu,Name,Midterm,Final,Point,Grade,Id, Subj, Credit}=location.state;
   
+  // console.log(location.state);
+
+  // const handleResult = () => {
+  //   navigate("/Result", {
+  //     state: { Idtsu, Name, Midterm, Final, Point, Grade,Id,Subj,Credit},
+  //   });
+  // };
   const handleResult = () => {
     navigate("/Result", {
-      state: { Idstu, Name, Midterm, Final, Point, Grade,Id,Subj,Credit},
+      state: { Idtsu, Name, Midterm, Final, Point, Grade,Id,Subj,Credit},
+      
     });
   };
+  
   return (
     <>
       <div>
@@ -74,11 +80,11 @@ const ScoreEdit = () => {
                   <th className="p-2">
                     <input
                       className="w-full p-1"
-                      id="Idstu"
+                      id="Idtsu"
                       type="text"
                       placeholder="กรุณาป้อนรหัสนิสิต"
-                      value={Idstu}
-                      onChange={(e) => setIdstu(e.target.value)}
+                      value={Idtsu}
+                      onChange={(e) => setIdtsu(e.target.value)}
                       required
                     />
                   </th>
@@ -162,10 +168,8 @@ const ScoreEdit = () => {
           </form>
         </div>
       </div>
-      </>
+    </>
   );
-              }
 };
-
 
 export default ScoreEdit;

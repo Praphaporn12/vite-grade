@@ -15,15 +15,19 @@ interface dataS {
     Id: String;
     Subj: string;
     Credit: String;
+    Sum:String;
   }
   
+
+
 
 const Result = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  if (location.state === null) {
-    return <Navigate to="/" />;
-  }
+
+  // if (location.state === null) {
+  //   return <Navigate to="/" />;
+  // }
 
   const {Idtsu,Name,Midterm,Final,Point,Grade,Id, Subj, Credit}=location.state;
 
@@ -35,7 +39,9 @@ const Result = () => {
   // };
 
   const handleScoreEdit = () => {
-    navigate("/ScoreEdit");
+    navigate("/ScoreEdit", {
+      state: { Idtsu, Name, Midterm, Final, Point, Grade,Id,Subj,Credit},
+    });
   };
 
 
@@ -67,7 +73,7 @@ const Result = () => {
       </div>
 
       <div className="max-w-screen-xl mx-auto text-center">
-        <form onClick={handleScoreEdit}>
+        <form onSubmit={handleScoreEdit}>
         <table className=" min-w-full bg-white border border-gray-300 rounded-lg text-lg">
           <thead>
             <tr className="bg-grayblue p-8 text-black">
@@ -95,7 +101,7 @@ const Result = () => {
               <th className="border p-2">{Grade}</th>
               <th className="border p-2"></th>
               <th className="border p-2">
-              <form onClick={handleScoreEdit}>
+              
                 <div>
                   <button type="submit"
                     className="fa-solid fa-house">
@@ -115,7 +121,7 @@ const Result = () => {
                     </svg>
                   </button>
                 </div>
-                </form>
+                
               </th>
             </tr>
             <tr className="bg-gray-100">
@@ -129,7 +135,7 @@ const Result = () => {
               <th className="border p-2"></th>
               <th className="border p-2"></th>
               <th className="border p-2">
-                <form onClick={handleScoreEdit}>
+                {/* <form onClick={handleScoreEdit}>
                 <div>
                   <a
                     href="/ScoreEdit"
@@ -152,7 +158,7 @@ const Result = () => {
                     </svg>
                   </a>
                 </div>
-                </form>
+                </form> */}
               </th>
             </tr>
             <tr className="bg-gray-100">
@@ -166,7 +172,7 @@ const Result = () => {
               <th className="border p-2"></th>
               <th className="border p-2"></th>
               <th className="border p-2">
-              <form onClick={handleScoreEdit}>
+              {/* <form onClick={handleScoreEdit}>
                 <div>
                   <a
                     href="/ScoreEdit"
@@ -189,7 +195,7 @@ const Result = () => {
                     </svg>
                   </a>
                 </div>
-                </form>
+                </form> */}
               </th>
             </tr>
             <tr className="bg-gray-100">
@@ -203,7 +209,7 @@ const Result = () => {
               <th className="border p-2"></th>
               <th className="border p-2"></th>
               <th className="border p-2">
-              <form onClick={handleScoreEdit}>
+              {/* <form onClick={handleScoreEdit}>
                 <div>
                   <a
                     href="/ScoreEdit"
@@ -226,7 +232,7 @@ const Result = () => {
                     </svg>
                   </a>
                 </div>
-                </form>
+                </form> */}
               </th>
             </tr>
           </tbody>

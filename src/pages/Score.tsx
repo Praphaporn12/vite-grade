@@ -3,25 +3,31 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useParams } from 'react-router-dom';
 
+
 interface dataP {
   Id: String;
   Subj: string;
   Credit: String;
+  Sum:String;
 }
+
 
 const Score = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  // setSum(midterm + final);
 
-  if (location.state === null) {
-    return <Navigate to="/"/>;
-  }
+  // if (location.state === null) {
+    // return <Navigate to="/Result"/>;
+  // }
   
   // const {state} = location;
   const { Id, Subj, Credit } = location.state;
   console.log(location.state);
 
-  const [Idstu, setIdstu] = useState("");
+
+
+  const [Idtsu, setIdtsu] = useState("");
   const [Name, setName] = useState("");
   const [Midterm, setMidterm] = useState("");
   const [Final, setFinal] = useState("");
@@ -29,7 +35,7 @@ const Score = () => {
   const [Grade, setGrade] = useState("");
   const handleResult = () => {
     navigate("/Result", {
-      state: { Idstu, Name, Midterm, Final, Point, Grade,Id,Subj,Credit},
+      state: { Idtsu, Name, Midterm, Final, Point, Grade,Id,Subj,Credit},
     });
   };
   return (
@@ -73,11 +79,11 @@ const Score = () => {
                   <th className="p-2">
                     <input
                       className="w-full p-1"
-                      id="Idstu"
+                      id="Idtsu"
                       type="text"
                       placeholder="กรุณาป้อนรหัสนิสิต"
-                      value={Idstu}
-                      onChange={(e) => setIdstu(e.target.value)}
+                      value={Idtsu}
+                      onChange={(e) => setIdtsu(e.target.value)}
                       required
                     />
                   </th>
@@ -107,7 +113,8 @@ const Score = () => {
                       required
                     />
                   </th>
-                  <th className="border p-2"></th>
+                  <th className="border p-2">
+                  </th>
                   <th className="border p-2"></th>
                   <th className="border p-2">
                     <p></p>
