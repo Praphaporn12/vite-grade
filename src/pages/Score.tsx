@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 
 
@@ -17,9 +17,7 @@ const Score = () => {
   const location = useLocation();
   // setSum(midterm + final);
 
-  // if (location.state === null) {
-    // return <Navigate to="/Result"/>;
-  // }
+
   
   // const {state} = location;
   const { Id, Subj, Credit } = location.state;
@@ -33,9 +31,36 @@ const Score = () => {
   const [Final, setFinal] = useState("");
   const [Point, setPoint] = useState("");
   const [Grade, setGrade] = useState("");
+  const [Total, setTotal] = useState("");
+
+  useEffect(() => {
+    // Convert Midterm and Final to numbers and sum them
+    const midtermValue = parseFloat(Midterm) || 0;
+    const finalValue = parseFloat(Final) || 0;
+    const totalValue = midtermValue + finalValue;
+
+    setTotal(totalValue.toString());
+
+    // Determine the grade based on the total value
+    if (totalValue >= 80) {
+      setGrade('A');
+    } else if (totalValue >= 70) {
+      setGrade('B+');
+    } else if (totalValue >= 65) {
+      setGrade('B');
+    } else if (totalValue >= 60) {
+      setGrade('C');
+    } else if (totalValue >= 55) {
+      setGrade('C');
+    } else if (totalValue >= 50) {
+      setGrade('D');
+    } else {
+      setGrade('F');
+    }
+  }, [Midterm, Final]);
   const handleResult = () => {
     navigate("/Result", {
-      state: { Idtsu, Name, Midterm, Final, Point, Grade,Id,Subj,Credit},
+      state: { Idtsu, Name, Midterm, Final, Point, Grade,Id,Subj,Credit,Total},
     });
   };
   return (
@@ -114,8 +139,11 @@ const Score = () => {
                     />
                   </th>
                   <th className="border p-2">
+                  {Midterm && Final ? Total : ""}
                   </th>
-                  <th className="border p-2"></th>
+                  <th className="border p-2">
+                  {Midterm && Final ? Grade : ""}
+                  </th>
                   <th className="border p-2">
                     <p></p>
                   </th>
@@ -162,7 +190,7 @@ const Score = () => {
               rel="noreferrer"
               // onClick={handleResult}
             >
-              คำนวณ
+              บันทึก
             </button>
           </div>
           </form>

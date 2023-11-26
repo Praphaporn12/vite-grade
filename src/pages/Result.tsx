@@ -15,7 +15,6 @@ interface dataS {
     Id: String;
     Subj: string;
     Credit: String;
-    Sum:String;
   }
   
 
@@ -25,11 +24,11 @@ const Result = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // if (location.state === null) {
-  //   return <Navigate to="/" />;
-  // }
+  if (location.state === null) {
+    return <Navigate to="/" />;
+  }
 
-  const {Idtsu,Name,Midterm,Final,Point,Grade,Id, Subj, Credit}=location.state;
+  const {Idtsu,Name,Midterm,Final,Point,Grade,Id, Subj, Credit,Total}=location.state;
 
 
 
@@ -40,10 +39,13 @@ const Result = () => {
 
   const handleScoreEdit = () => {
     navigate("/ScoreEdit", {
-      state: { Idtsu, Name, Midterm, Final, Point, Grade,Id,Subj,Credit},
+      state: { Idtsu, Name, Midterm, Final, Point, Grade,Id,Subj,Credit,Total},
     });
   };
-
+  
+  const handleBackToSubject = () => {
+    navigate("/Subject");
+  };
 
   return (
     <div className="bg-border  pl-16 pt-7 mt-10 ml-20 mr-20 rounded-lg text-black text-left">
@@ -97,7 +99,7 @@ const Result = () => {
               <th className="border p-2 text-center">100</th>
               <th className="border p-2 bg-yellow-200">{Midterm}</th>
               <th className="border p-2">{Final}</th>
-              <th className="border p-2">{Point}</th>
+              <th className="border p-2">{Midterm && Final ? Total : ""}</th>
               <th className="border p-2">{Grade}</th>
               <th className="border p-2"></th>
               <th className="border p-2">
@@ -240,16 +242,15 @@ const Result = () => {
         <p className="pt-3 text-1xl text-black text-center font-bold text-xl">
           เกรดเฉลี่ย GPA ของรายวิชาคือ 4.00
         </p>
-
+        </form>
         <div className="flex items-center justify-center pt-8 pb-8">
           <button
-            type="submit"
+            onClick={handleBackToSubject}
             className="block bg-white hover:bg-darkgray text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            rel="noreferrer">
+          >
             กลับ
           </button>
         </div>
-        </form>
       </div>
     </div>
   );

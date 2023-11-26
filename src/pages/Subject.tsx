@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 
 const Subject = () => {
@@ -6,9 +6,8 @@ const Subject = () => {
   const [Id, setId] = useState("");
   const [Subj, setSubj] = useState("");
   const [Credit, setCredit] = useState("");
+  
 
-  
-  
   const handleScore = () => {
     navigate("/Score",{state:{Id,Subj,Credit}});
     
