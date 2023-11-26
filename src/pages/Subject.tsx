@@ -20,7 +20,7 @@ const Subject = () => {
           บริการระบบตัดเกรดออนไลน์ฟรีเพื่ออำนวยความสะดวกแก่ครูอาจารย์ทุกท่าน
         </h2>
       </div>
-      <div className="bg-border text-1xl font-sans text-center m-16 rounded-lg">
+      <div className="bg-border text-1xl font-sans text-center m-16 p-8 rounded-lg">
         <p className="font-bold pt-7 text-xl text-black">กรุณาเลือกวิชา</p>
         <div className="bg-white text-1xl font-sans text-center m-8 p-20 rounded-lg">
           <div className="w-full max-w-xs mx-auto">

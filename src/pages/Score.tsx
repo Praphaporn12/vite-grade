@@ -49,7 +49,7 @@ const Score = () => {
     } else if (totalValue >= 65) {
       setGrade('B');
     } else if (totalValue >= 60) {
-      setGrade('C');
+      setGrade('C+');
     } else if (totalValue >= 55) {
       setGrade('C');
     } else if (totalValue >= 50) {
@@ -58,6 +58,7 @@ const Score = () => {
       setGrade('F');
     }
   }, [Midterm, Final]);
+  
   const handleResult = () => {
     navigate("/Result", {
       state: { Idtsu, Name, Midterm, Final, Point, Grade,Id,Subj,Credit,Total},
