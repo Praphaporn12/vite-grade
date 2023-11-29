@@ -30,7 +30,7 @@ const Result = () => {
     return <Navigate to="/" />;
   }
 
-  const {Idtsu,Name,Midterm,Final,Point,Grade,Id, Subj, Credit,Total}=location.state;
+  // const {Idtsu,Name,Midterm,Final,Point,Grade,Id, Subj, Credit,Total}=location.state;
 
 
 

@@ -1,15 +1,16 @@
-import { Navigate, useLocation } from "react-router-dom";
+import { Link,Outlet, Navigate, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, Component } from "react";
 import ScoreN from "./ScoreN";
 import { useDispatch } from "react-redux";
 import Student from "./Student";
+import { addStudent } from "../Components/Slice";
 
 const Data_Init = [
   {
     id:1,
     page:"",
-    Idtsu: '',
+    Idstu: '',
     Name: "",
     Midterm: 0,
     Final: 0,
@@ -54,7 +55,7 @@ const Score = () => {
       let newStudent = [...student];
       newStudent.find((element) => {
         if (element.id == id) {
-          element.name = name;
+          element.Name = name;
           return element;
         }
       });
@@ -65,7 +66,7 @@ const Score = () => {
       let newStudent = [...student];
       newStudent.find((element) => {
         if (element.id == id) {
-          element.mid = mid;
+          element.Midterm = mid;
           return element;
         }
       });
@@ -76,7 +77,7 @@ const Score = () => {
       let newStudent = [...student];
       newStudent.find((element) => {
         if (element.id == id) {
-          element.final = final;
+          element.Final = final;
           return element;
         }
       });
@@ -131,8 +132,7 @@ const Score = () => {
   };
 
   const handleResult = () => {
-    // console.log(indexs);
-    navigate("/Result")
+    dispatch(addStudent(student))
     //   state: { Idtsu, Name, Midterm, Final, Point, Grade,Id,Subj,Credit,Total},
     // });
   };
@@ -173,7 +173,7 @@ const Score = () => {
         </p>
 
         <div className="max-w-screen-xl mx-auto">
-          <form onSubmit={handleResult}>
+          <form >
             <table className="min-w-full bg-white border border-grayless rounded-lg text-lg ">
               <thead>
                 <tr className="bg-grayblue p-8 text-black">
@@ -197,7 +197,7 @@ const Score = () => {
               <button
                 type="button"
                 onClick={()=>{
-                  changeEachRecord(null,null,null,null)
+                  changeEachRecord(null,null,null,null,)
                 }}
                 className="bg-green hover:bg-darkgreen text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline mt-4 mb-4"
               >
@@ -206,17 +206,19 @@ const Score = () => {
             </div>
 
             <div className="flex items-center justify-center pt-8 pb-8">
-              <button
-                type="submit"
+              <Link
+                // type="button"
+                to="/Result" onClick={handleResult}
                 className="block bg-blue hover:bg-darkblue text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 rel="noreferrer"
               >
                 บันทึก
-              </button>
+              </Link>
             </div>
           </form>
         </div>
         <div></div>
+        <Outlet/>
       </div>
     </>
   );
