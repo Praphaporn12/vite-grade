@@ -114,7 +114,6 @@ const ScoreEdit = () => {
                       type="text"
                       placeholder="กรุณาป้อนรหัสนิสิต"
                       value={Idtsu}
-                      onChange={(e) => setIdtsu(e.target.value)}
                       required
                     />
                   </th>

@@ -9,11 +9,6 @@ const Layout = () => {
   const [subject, setSubject] = useState("");
 
 
-  // useEffect(() => {
-  //   const queryParams = new URLSearchParams(location.search);
-  //   const subjectParam = queryParams.get("subject");
-  //   setSubject(subjectParam || "");
-  // }, [location.search]);
   return (
     <>
 

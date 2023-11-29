@@ -1,5 +1,6 @@
 import { Navigate, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
+import Score from "./pages/Score";
 
 const Subject = () => {
   const navigate = useNavigate();
@@ -8,8 +9,10 @@ const Subject = () => {
   const [Credit, setCredit] = useState("");
   
 
-  const handleScore = () => {
-    navigate("/Score",{state:{Id,Subj,Credit}});
+  const handleScore= () => {
+    navigate("/Score",{
+      state:{Id,Subj,Credit},
+    })
     
   };
   return (
@@ -81,11 +84,9 @@ const Subject = () => {
                 <button
                   type="submit"
                   className="block bg-blue hover:bg-darkblue text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                  // onClick={handleScore}
                 >
                   ตกลง
                 </button>
-                
               </div>
             </form>
           </div>

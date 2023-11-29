@@ -1,69 +1,160 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { useParams } from 'react-router-dom';
+import { useState, useEffect, Component } from "react";
+import ScoreN from "./ScoreN";
+import { useDispatch } from "react-redux";
+import Student from "./Student";
 
-
-interface dataP {
-  Id: String;
-  Subj: string;
-  Credit: String;
-  Sum:String;
-}
-
+const Data_Init = [
+  {
+    id:1,
+    page:"",
+    Idtsu: '',
+    Name: "",
+    Midterm: 0,
+    Final: 0,
+    Point: 0,
+    Grade: "",
+  },
+];
 
 const Score = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  // setSum(midterm + final);
+  const [student, setStudent] = useState(Data_Init);
 
-
-  
-  // const {state} = location;
-  const { Id, Subj, Credit } = location.state;
-  console.log(location.state);
-
-
-
-  const [Idtsu, setIdtsu] = useState("");
-  const [Name, setName] = useState("");
-  const [Midterm, setMidterm] = useState("");
-  const [Final, setFinal] = useState("");
-  const [Point, setPoint] = useState("");
-  const [Grade, setGrade] = useState("");
-  const [Total, setTotal] = useState("");
-
-  useEffect(() => {
-    // Convert Midterm and Final to numbers and sum them
-    const midtermValue = parseFloat(Midterm) || 0;
-    const finalValue = parseFloat(Final) || 0;
-    const totalValue = midtermValue + finalValue;
-
-    setTotal(totalValue.toString());
-
-    // Determine the grade based on the total value
-    if (totalValue >= 80) {
-      setGrade('A');
-    } else if (totalValue >= 70) {
-      setGrade('B+');
-    } else if (totalValue >= 65) {
-      setGrade('B');
-    } else if (totalValue >= 60) {
-      setGrade('C+');
-    } else if (totalValue >= 55) {
-      setGrade('C');
-    } else if (totalValue >= 50) {
-      setGrade('D');
-    } else {
-      setGrade('F');
+  const changeEachRecord = (Idstu, name, mid, final, id) => {
+    //new student
+    if (Idstu==null && name == null && mid == null && final == null) {
+      const ids = student.map((object) => {
+        return object.id;
+      });
+      const lastId = Math.max(...ids) + 1;
+      const pageNumber: Number = lastId / 10 + 1;
+      setStudent((student) => {
+        return [
+          ...student,
+          { id: lastId,page: pageNumber,Idstu: "",  Name: "", Midterm: 0, Final: 0 },
+        ];
+      });
     }
-  }, [Midterm, Final]);
-  
-  const handleResult = () => {
-    navigate("/Result", {
-      state: { Idtsu, Name, Midterm, Final, Point, Grade,Id,Subj,Credit,Total},
-    });
+    //change Idstu
+    else if (Idstu != null) {
+      let newStudent = [...student];
+      newStudent.find((element) => {
+        if (element.id == id) {
+          element.Idstu = Idstu;
+          return element;
+        }
+      });
+      setStudent(newStudent);
+    }
+    else if (name != null) {
+      let newStudent = [...student];
+      newStudent.find((element) => {
+        if (element.id == id) {
+          element.name = name;
+          return element;
+        }
+      });
+      setStudent(newStudent);
+    }
+    //change mid
+    else if (mid != null) {
+      let newStudent = [...student];
+      newStudent.find((element) => {
+        if (element.id == id) {
+          element.mid = mid;
+          return element;
+        }
+      });
+      setStudent(newStudent);
+    }
+    //change final
+    else if (final != null) {
+      let newStudent = [...student];
+      newStudent.find((element) => {
+        if (element.id == id) {
+          element.final = final;
+          return element;
+        }
+      });
+      setStudent(newStudent);
+    }
   };
+
+  const { Id, Subj, Credit } = location.state;
+  // console.log(location.state);
+
+  // const [indexs, setindexs] = useState([
+  //   // You can prepopulate the table with some initial indexs
+  //   { id: 1, Idtsu: "", Midterm: "", Final: "" },
+  //   { id: 2, Idtsu: "", Midterm: "", Final: "" },
+  //   // Add more indexs as needed
+  // ]);
+
+  // const handleAddindex = () => {
+  //   setindexs((previndexs) => [
+  //     ...previndexs,
+  //     {
+  //       id: previndexs.length + 1,
+  //       Idtsu: "",
+  //       Midterm: "",
+  //       Final: "",
+  //     },
+  //   ]);
+  // };
+
+  const calculateTotal = (midterm: string, final: string) => {
+    const midtermValue = parseFloat(midterm) || 0;
+    const finalValue = parseFloat(final) || 0;
+    return midtermValue + finalValue;
+  };
+
+  const calculateGrade = (total: number) => {
+    if (total >= 80) {
+      return "A";
+    } else if (total >= 70) {
+      return "B+";
+    } else if (total >= 65) {
+      return "B";
+    } else if (total >= 60) {
+      return "C+";
+    } else if (total >= 55) {
+      return "C";
+    } else if (total >= 50) {
+      return "D";
+    } else {
+      return "F";
+    }
+  };
+
+  const handleResult = () => {
+    // console.log(indexs);
+    navigate("/Result")
+    //   state: { Idtsu, Name, Midterm, Final, Point, Grade,Id,Subj,Credit,Total},
+    // });
+  };
+
+  let Components = []
+  student.map((record,index)=>{
+    Components.push(
+      <Student
+        // Idtsu={record.Idtsu}
+        // Name={record.Name}
+        // Midterm={record.Midterm}
+        // Final={record.Final}
+        // Point={record.Point}
+        // Grade={record.Grade}
+        student={student}
+      />
+      
+    )
+  })
+    
+  console.log(student)
+
   return (
     <>
       <div>
@@ -82,120 +173,50 @@ const Score = () => {
         </p>
 
         <div className="max-w-screen-xl mx-auto">
-        <form onSubmit={handleResult}>
-          <table className="min-w-full bg-white border border-grayless rounded-lg text-lg " >
-            <thead>
-              <tr className="bg-grayblue p-8 text-black">
-                <th className="border p-2">ลำดับ</th>
-                <th className="border p-2">รหัสนิสิต</th>
-                <th className="border p-2">ชื่อ-นามสกุล</th>
-                <th className="border p-2">คะแนนเก็บ</th>
-                <th className="border p-2">สอบกลางภาค</th>
-                <th className="border p-2">สอบปลายภาค</th>
-                <th className="border p-2">คะแนนรวม</th>
-                <th className="border p-2">ผลการเรียน</th>
-                <th className="border p-2">หมายเหตุ</th>
-                <th className="border p-2"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {[...Array(5)].map((_, index) => (
-                <tr key={index} className="bg-gray-100">
-                  <th className="border p-2">{index + 1}</th>
-                  <th className="p-2">
-                    <input
-                      className="w-full p-1"
-                      id="Idtsu"
-                      type="text"
-                      placeholder="กรุณาป้อนรหัสนิสิต"
-                      value={Idtsu}
-                      onChange={(e) => setIdtsu(e.target.value)}
-                      required
-                    />
-                  </th>
-                  <th className="border p-2 bg-green-200"></th>
-                  <th className="border p-2">
-                    <p>100</p>
-                  </th>
-                  <th className="border p-2">
-                    <input
-                      className="w-full p-1"
-                      id="Midterm"
-                      type="text"
-                      placeholder="กรุณากรอกคะแนน"
-                      value={Midterm}
-                      onChange={(e) => setMidterm(e.target.value)}
-                      required
-                    />
-                  </th>
-                  <th className="border p-2 bg-yellow-200">
-                    <input
-                      className="w-full p-1"
-                      id="Final"
-                      type="text"
-                      placeholder="กรุณากรอกคะแนน"
-                      value={Final}
-                      onChange={(e) => setFinal(e.target.value)}
-                      required
-                    />
-                  </th>
-                  <th className="border p-2">
-                  {Midterm && Final ? Total : ""}
-                  </th>
-                  <th className="border p-2">
-                  {Midterm && Final ? Grade : ""}
-                  </th>
-                  <th className="border p-2">
-                    <p></p>
-                  </th>
-                  <th className="border p-2">
-                    <div>
-                      <i className="fa-solid fa-house">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth="1.5"
-                          stroke="currentColor"
-                          className="w-6 h-6"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                          />
-                        </svg>
-                      </i>
-                    </div>
-                  </th>
+          <form onSubmit={handleResult}>
+            <table className="min-w-full bg-white border border-grayless rounded-lg text-lg ">
+              <thead>
+                <tr className="bg-grayblue p-8 text-black">
+                  <th className="border p-2">ลำดับ</th>
+                  <th className="border p-2">รหัสนิสิต</th>
+                  <th className="border p-2">ชื่อ-นามสกุล</th>
+                  <th className="border p-2">คะแนนเก็บ</th>
+                  <th className="border p-2">สอบกลางภาค</th>
+                  <th className="border p-2">สอบปลายภาค</th>
+                  <th className="border p-2">คะแนนรวม</th>
+                  <th className="border p-2">ผลการเรียน</th>
+                  <th className="border p-2">หมายเหตุ</th>
                 </tr>
-              ))}
-            </tbody>
-            <tr>
-              <td className="border p-4 text-center" colSpan={10}>
-                <button
-                  className="bg-green hover:bg-darkgreen text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline mt-4 mb-4"
-                  type="button"
-                >
-                  เพิ่มรายชื่อ
-                </button>
-              </td>
-            </tr>
-          </table>
-          
+              </thead>
+              <tbody>
+                <Student student={student} changeEachRecord={changeEachRecord} calculateGrade={calculateGrade} calculateTotal={calculateTotal}/>
+              </tbody>
+            </table>
 
-          <div className="flex items-center justify-center pt-8 pb-8">
-            <button
-              type="submit"
-              className="block bg-blue hover:bg-darkblue text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              rel="noreferrer"
-              // onClick={handleResult}
-            >
-              บันทึก
-            </button>
-          </div>
+            <div className="flex items-center justify-center pt-8 pb-8">
+              <button
+                type="button"
+                onClick={()=>{
+                  changeEachRecord(null,null,null,null)
+                }}
+                className="bg-green hover:bg-darkgreen text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline mt-4 mb-4"
+              >
+                เพิ่มรายชื่อ
+              </button>
+            </div>
+
+            <div className="flex items-center justify-center pt-8 pb-8">
+              <button
+                type="submit"
+                className="block bg-blue hover:bg-darkblue text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                rel="noreferrer"
+              >
+                บันทึก
+              </button>
+            </div>
           </form>
         </div>
+        <div></div>
       </div>
     </>
   );

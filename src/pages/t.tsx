@@ -1,7 +1,7 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useParams } from 'react-router-dom';
+import ScoreN from "./ScoreN";
 
 interface dataP {
   Id: String;
@@ -15,42 +15,34 @@ const Score = () => {
   const location = useLocation();
 
   const { Id, Subj, Credit } = location.state;
+  console.log(location.state);
 
-  const [Idtsu, setIdtsu] = useState("");
-  const [Name, setName] = useState("");
-  const [Midterm, setMidterm] = useState("");
-  const [Final, setFinal] = useState("");
-  const [Total, setTotal] = useState("");
-  const [Grade, setGrade] = useState("");
+  const [rows, setRows] = useState([
+    // You can prepopulate the table with some initial rows
+    { id: 1, Idtsu: "", Midterm: "", Final: "" },
+    { id: 2, Idtsu: "", Midterm: "", Final: "" },
+    // Add more rows as needed
+  ]);
 
-  // Use useEffect to update the Total and Grade whenever Midterm or Final changes
-  useEffect(() => {
-    // Convert Midterm and Final to numbers and sum them
-    const midtermValue = parseFloat(Midterm) || 0;
-    const finalValue = parseFloat(Final) || 0;
-    const totalValue = midtermValue + finalValue;
-
-    // Update the Total state
-    setTotal(totalValue.toString());
-
-    // Determine the grade based on the total value
-    if (totalValue >= 90) {
-      setGrade('A');
-    } else if (totalValue >= 80) {
-      setGrade('B');
-    } else if (totalValue >= 70) {
-      setGrade('C');
-    } else if (totalValue >= 60) {
-      setGrade('D');
-    } else {
-      setGrade('F');
-    }
-  }, [Midterm, Final]);
+  const handleAddRow = () => {
+    setRows((prevRows) => [
+      ...prevRows,
+      {
+        id: prevRows.length + 1,
+        Idtsu: "",
+        Midterm: "",
+        Final: "",
+      },
+    ]);
+  };
 
   const handleResult = () => {
-    navigate("/Result", {
-      state: { Idtsu, Name, Midterm, Final, Point, Grade, Id, Subj, Credit, Total },
-    });
+    // Process the data, navigate, etc.
+    // For now, just log the rows to the console
+    console.log(rows);
+
+    // Add your navigation logic here
+    // navigate("/Result", { state: yourStateObject });
   };
 
   return (
@@ -72,7 +64,7 @@ const Score = () => {
 
         <div className="max-w-screen-xl mx-auto">
           <form onSubmit={handleResult}>
-            <table className="min-w-full bg-white border border-grayless rounded-lg text-lg " >
+            <table className="min-w-full bg-white border border-grayless rounded-lg text-lg ">
               <thead>
                 <tr className="bg-grayblue p-8 text-black">
                   <th className="border p-2">ลำดับ</th>
@@ -84,21 +76,28 @@ const Score = () => {
                   <th className="border p-2">คะแนนรวม</th>
                   <th className="border p-2">ผลการเรียน</th>
                   <th className="border p-2">หมายเหตุ</th>
-                  <th className="border p-2"></th>
                 </tr>
               </thead>
               <tbody>
-                {[...Array(5)].map((_, index) => (
-                  <tr key={index} className="bg-gray-100">
-                    <th className="border p-2">{index + 1}</th>
+                {rows.map((row) => (
+                  <tr key={row.id} className="bg-gray-100">
+                    <th className="border p-2">{row.id}</th>
                     <th className="p-2">
                       <input
                         className="w-full p-1"
-                        id="Idtsu"
+                        id={`Idtsu_${row.id}`}
                         type="text"
                         placeholder="กรุณาป้อนรหัสนิสิต"
-                        value={Idtsu}
-                        onChange={(e) => setIdtsu(e.target.value)}
+                        value={row.Idtsu}
+                        onChange={(e) =>
+                          setRows((prevRows) =>
+                            prevRows.map((prevRow) =>
+                              prevRow.id === row.id
+                                ? { ...prevRow, Idtsu: e.target.value }
+                                : prevRow
+                            )
+                          )
+                        }
                         required
                       />
                     </th>
@@ -109,68 +108,64 @@ const Score = () => {
                     <th className="border p-2">
                       <input
                         className="w-full p-1"
-                        id="Midterm"
+                        id={`Midterm_${row.id}`}
                         type="text"
                         placeholder="กรุณากรอกคะแนน"
-                        value={Midterm}
-                        onChange={(e) => setMidterm(e.target.value)}
+                        value={row.Midterm}
+                        onChange={(e) =>
+                          setRows((prevRows) =>
+                            prevRows.map((prevRow) =>
+                              prevRow.id === row.id
+                                ? { ...prevRow, Midterm: e.target.value }
+                                : prevRow
+                            )
+                          )
+                        }
                         required
                       />
                     </th>
                     <th className="border p-2 bg-yellow-200">
                       <input
                         className="w-full p-1"
-                        id="Final"
+                        id={`Final_${row.id}`}
                         type="text"
                         placeholder="กรุณากรอกคะแนน"
-                        value={Final}
-                        onChange={(e) => setFinal(e.target.value)}
+                        value={row.Final}
+                        onChange={(e) =>
+                          setRows((prevRows) =>
+                            prevRows.map((prevRow) =>
+                              prevRow.id === row.id
+                                ? { ...prevRow, Final: e.target.value }
+                                : prevRow
+                            )
+                          )
+                        }
                         required
                       />
                     </th>
                     <th className="border p-2">
-                      {Midterm && Final ? Total : ""}
+                      {row.Midterm && row.Final ? Total : ""}
                     </th>
                     <th className="border p-2">
-                      {Midterm && Final ? Grade : ""}
+                      {row.Midterm && row.Final ? Grade : ""}
                     </th>
                     <th className="border p-2">
                       <p></p>
                     </th>
-                    <th className="border p-2">
-                      <div>
-                        <i className="fa-solid fa-house">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.5"
-                            stroke="currentColor"
-                            className="w-6 h-6"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                          </svg>
-                        </i>
-                      </div>
-                    </th>
                   </tr>
                 ))}
               </tbody>
-              <tr>
-                <td className="border p-4 text-center" colSpan={10}>
-                  <button
-                    className="bg-green hover:bg-darkgreen text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline mt-4 mb-4"
-                    type="button"
-                  >
-                    เพิ่มรายชื่อ
-                  </button>
-                </td>
-              </tr>
             </table>
+
+            <div className="flex items-center justify-center pt-8 pb-8">
+              <button
+                type="button"
+                onClick={handleAddRow}
+                className="bg-green hover:bg-darkgreen text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline mt-4 mb-4"
+              >
+                เพิ่มรายชื่อ
+              </button>
+            </div>
 
             <div className="flex items-center justify-center pt-8 pb-8">
               <button
@@ -178,11 +173,12 @@ const Score = () => {
                 className="block bg-blue hover:bg-darkblue text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 rel="noreferrer"
               >
-                คำนวณ
+                บันทึก
               </button>
             </div>
           </form>
         </div>
+        <div></div>
       </div>
     </>
   );

@@ -1,51 +1,35 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from "react";
 
-// Define the types for the grade and letter grade
-type Grade = number;
-type LetterGrade = 'A' | 'B' | 'C' | 'D' | 'F';
+const [Idtsu, setIdtsu] = useState("");
+const [Name, setName] = useState("");
+const [Midterm, setMidterm] = useState("");
+const [Final, setFinal] = useState("");
+const [Point, setPoint] = useState("");
+const [Grade, setGrade] = useState("");
+const [Total, setTotal] = useState("");
 
-const GradeCalculator: React.FC = () => {
-  const [numericalGrade, setNumericalGrade] = useState<Grade | ''>('');
-  const [letterGrade, setLetterGrade] = useState<LetterGrade | null>(null);
+useEffect(() => {
+    // Convert Midterm and Final to numbers and sum them
+    const midtermValue = parseFloat(Midterm) || 0;
+    const finalValue = parseFloat(Final) || 0;
+    const totalValue = midtermValue + finalValue;
 
-  const calculateLetterGrade = (grade: Grade): LetterGrade => {
-    if (grade >= 90) {
-      return 'A';
-    } else if (grade >= 80) {
-      return 'B';
-    } else if (grade >= 70) {
-      return 'C';
-    } else if (grade >= 60) {
-      return 'D';
+    setTotal(totalValue.toString());
+
+    // Determine the grade based on the total value
+    if (totalValue >= 80) {
+      setGrade('A');
+    } else if (totalValue >= 70) {
+      setGrade('B+');
+    } else if (totalValue >= 65) {
+      setGrade('B');
+    } else if (totalValue >= 60) {
+      setGrade('C+');
+    } else if (totalValue >= 55) {
+      setGrade('C');
+    } else if (totalValue >= 50) {
+      setGrade('D');
     } else {
-      return 'F';
+      setGrade('F');
     }
-  };
-
-  const handleGradeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const inputGrade = parseFloat(event.target.value);
-    setNumericalGrade(isNaN(inputGrade) ? '' : inputGrade);
-    setLetterGrade(isNaN(inputGrade) ? null : calculateLetterGrade(inputGrade));
-  };
-
-  return (
-    <div>
-      <h1>Grade Calculator</h1>
-      <label>
-        Enter Numerical Grade:
-        <input
-          type="text"
-          value={numericalGrade}
-          onChange={handleGradeChange}
-        />
-      </label>
-      <div>
-        {typeof letterGrade === 'string' && (
-          <p>Letter Grade: {letterGrade}</p>
-        )}
-      </div>
-    </div>
-  );
-};
-
-export default GradeCalculator;
+  }, [Midterm, Final]);
